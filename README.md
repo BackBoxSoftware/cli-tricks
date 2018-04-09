@@ -478,7 +478,7 @@ rpm -qa --qf "%{NAME}\n"
 
 ## Regex Tricks
 
-### ~~add description~~
+### Regex to match word of N characters
 
 ```bash
 ^\w{0,10}$ # allows words of up to 10 characters.

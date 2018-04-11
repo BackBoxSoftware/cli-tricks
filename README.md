@@ -191,6 +191,12 @@ s/          <-- this means it should perform a substitution
 \< EXACT MATCH \>
 ```
 
+### Delete all empty lines
+
+```bash
+sed '/^\s*$/d' file
+```
+
 ### Add line after a line with match
 
 ```bash

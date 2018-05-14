@@ -206,6 +206,30 @@ s/          <-- this means it should perform a substitution
  sed '/regex/{x;p;x;G;}'
  ```
 
+### number each line of file, but only print numbers if line is not blank
+ ```bash
+ sed '/./=' filename | sed '/./N; s/\n/ /'
+ ```
+ 
+ ### substitute "foo" with "bar" ONLY for lines which contain "baz"
+  ```bash
+  sed '/baz/s/foo/bar/g'
+  ```
+ 
+ ### substitute "foo" with "bar" EXCEPT for lines which contain "baz"
+  ```bash
+  sed '/baz/!s/foo/bar/g'
+  ```
+ 
+ ### substitute (find and replace) "foo" with "bar" on each line
+  ```bash
+  sed 's/foo/bar/'             # replaces only 1st instance in a line
+  sed 's/foo/bar/4'            # replaces only 4th instance in a line
+  sed 's/foo/bar/g'            # replaces ALL instances in a line
+  sed 's/\(.*\)foo\(.*foo\)/\1bar\2/' # replace the next-to-last case
+  sed 's/\(.*\)foo/\1bar/'            # replace only the last case
+  ```
+
 ### delete leading whitespace (spaces, tabs) from front of each line
  ```bash
  sed 's/^[ \t]*//'                    # see note on '\t' at end of file

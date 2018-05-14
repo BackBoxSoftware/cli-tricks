@@ -220,6 +220,33 @@ s/          <-- this means it should perform a substitution
   ```bash
   sed '/baz/!s/foo/bar/g'
   ```
+  
+   ### reverse order of lines (similar to "tac")
+   ```bash
+   sed '1!G;h;$!d'               
+   sed -n '1!G;h;$p'             
+   ```
+   
+   ### if a line ends with a backslash, append the next line to it
+   ```bash
+    sed -e :a -e '/\\$/N; s/\\\n//; ta'
+   ```
+   
+   # if a line begins with MATCH, append it to the previous line and replace MATCH with space
+   ```bash
+    sed -e :a -e '$!N;s/\nMATCH/ /;ta' -e 'P;D'
+   ```
+  
+  ### reverse each character on the line (similar to "rev")
+   ```bash
+   sed '/\n/!G;s/\(.\)\(.*\n\)/&\2\1/;//D;s/.//'
+   ```
+  
+ ### change "witch" or "gem" or "puss" to "red"
+ ```bash
+ sed 's/witch/red/g;s/gem/red/g;s/puss/red/g'   # most seds
+ gsed 's/witch\|gem\|puss/red/g'                # GNU sed only
+ ```
  
  ### substitute (find and replace) "foo" with "bar" on each line
   ```bash

@@ -81,7 +81,7 @@ grep -E -o '<MATCH>\w+'
 ### Print word before match
 
 ```bash
-grep -E "MATCH" | cut -d "," -f2 | awk {print $1}'
+grep -E "MATCH" | cut -d "," -f2 | awk '{print $1}'
 ```
 
 ### Print word containing string
@@ -190,6 +190,31 @@ s/          <-- this means it should perform a substitution
 /g          <-- this means the substitution is global (all occurrences on the line)
 \< EXACT MATCH \>
 ```
+
+### insert a blank line above every line which matches "regex"
+ ```bash
+ sed '/regex/{x;p;x;}'
+ ```
+ 
+### insert a blank line below every line which matches "regex"
+ ```bash
+ sed '/regex/G'
+ ```
+ 
+ ### insert a blank line above and below every line which matches "regex"
+ ```bash
+ sed '/regex/{x;p;x;G;}'
+ ```
+
+### delete leading whitespace (spaces, tabs) from front of each line
+ ```bash
+ sed 's/^[ \t]*//'                    # see note on '\t' at end of file
+ ```
+
+### delete trailing whitespace (spaces, tabs) from end of each line
+ ```bash
+ sed 's/[ \t]*$//'                    # see note on '\t' at end of file
+ ```
 
 ### Delete all empty lines
 
@@ -604,7 +629,7 @@ cpmiquerybin attr "" network_objects "ipaddr='<IP>'" -a __name__,ipaddr
 ```bash
 GATEWAYS=( `cpmiquerybin attr "" network_objects "(type='gateway') & (location='internal')" -a __name__ | tr '\n' ' '` )
 CLUSTERS=( `cpmiquerybin attr "" network_objects "(type='gateway_cluster') & (location='internal')" -a __name__ | tr '\n' ' '` )
-CLUSTER MEMBERS=( `cpmiquerybin attr "" network_objects "(type='cluster_member') | (type='gateway') & (location='internal')" -a __name__ | tr '\n
+CLUSTER MEMBERS=( `cpmiquerybin attr "" network_objects "(type='cluster_member') | (type='gateway') & (location='internal')" -a __name__ | tr '\n'
 ```
 
 ### Query all Cluster Members(MDS/Provider-1)

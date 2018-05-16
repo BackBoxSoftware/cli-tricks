@@ -328,7 +328,7 @@ sed -e '/./{H;$!d;}' -e 'x;/AAA/!d;/BBB/!d;/CCC/!d'
 sed -e '/./{H;$!d;}' -e 'x;/AAA/b' -e '/BBB/b' -e '/CCC/b' -e d
 ```
 
-### print from regexp to end of file
+### print from regexp to end of file 
 ```bash
 sed -n '/regexp/,$p'
 ```

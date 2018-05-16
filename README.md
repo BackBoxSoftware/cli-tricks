@@ -303,7 +303,7 @@ sed '/MATCH/i\<INSERT>' file
 sed 's/^/<STRING>/'
 ```
 
-###print lines with AAA, BBB and CCC (any order)
+### print lines with AAA, BBB and CCC (any order)
 ```bash
 sed '/AAA/!d; /BBB/!d; /CCC/!d'
 ```
@@ -313,22 +313,22 @@ sed '/AAA/!d; /BBB/!d; /CCC/!d'
 sed '/<MATCH>/s/^/<STRING>/'
 ```
 
-###print section of text if it contains MATCH (blank lines separate paragraphs)
+### print section of text if it contains MATCH (blank lines separate paragraphs)
 ```bash
 sed -e '/./{H;$!d;}' -e 'x;/MATCH/!d;'
 ```
 
-###print section of text if it contains AAA and BBB and CCC (in any order)
+### print section of text if it contains AAA and BBB and CCC (in any order)
 ```bash
 sed -e '/./{H;$!d;}' -e 'x;/AAA/!d;/BBB/!d;/CCC/!d'
 ```
 
-###print section of text if it contains AAA or BBB or CCC
+### print section of text if it contains AAA or BBB or CCC
 ```bash
 sed -e '/./{H;$!d;}' -e 'x;/AAA/b' -e '/BBB/b' -e '/CCC/b' -e d
 ```
 
-###print from regexp to end of file
+### print from regexp to end of file
 ```bash
 sed -n '/regexp/,$p'
 ```

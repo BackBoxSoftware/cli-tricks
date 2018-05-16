@@ -267,44 +267,78 @@ s/          <-- this means it should perform a substitution
  sed 's/[ \t]*$//'                    # see note on '\t' at end of file
  ```
 
-### Delete all empty lines
+### print lines which match regexp
+```bash
+sed -n '/regexp/p'           # method 1
+sed '/regexp/!d'             # method 2
+```
 
+### print line before regexp
+```bash
+sed -n '/regexp/{g;1!p;};h'
+```
+
+### print line after regexp
+```bash
+sed -n '/regexp/{n;p;}'
+```
+
+### Delete all empty lines
 ```bash
 sed '/^\s*$/d' file
 ```
 
 ### Add line after a line with match
-
 ```bash
 sed '/MATCH/a\ADD_THIS' file
 ```
 
 ### Add line before a line with match
-
 ```bash
 sed '/MATCH/i\<INSERT>' file
 ```
 
 ### Add string to beginning of all lines
-
 ```bash
 sed 's/^/<STRING>/'
 ```
 
-### Add string to beginning of all matching lines
+###print lines with AAA, BBB and CCC (any order)
+```bash
+sed '/AAA/!d; /BBB/!d; /CCC/!d'
+```
 
+### Add string to beginning of all matching lines
 ```bash
 sed '/<MATCH>/s/^/<STRING>/'
 ```
 
-### Add string to end of all lines
+###print section of text if it contains MATCH (blank lines separate paragraphs)
+```bash
+sed -e '/./{H;$!d;}' -e 'x;/MATCH/!d;'
+```
 
+###print section of text if it contains AAA and BBB and CCC (in any order)
+```bash
+sed -e '/./{H;$!d;}' -e 'x;/AAA/!d;/BBB/!d;/CCC/!d'
+```
+
+###print section of text if it contains AAA or BBB or CCC
+```bash
+sed -e '/./{H;$!d;}' -e 'x;/AAA/b' -e '/BBB/b' -e '/CCC/b' -e d
+```
+
+###print from regexp to end of file
+```bash
+sed -n '/regexp/,$p'
+```
+
+### Add string to end of all lines
 ```bash
 sed '/s/$/<string>/'
 ```
 
 ### Add string to end of all matching lines
-
 ```bash
 sed '/<MATCH>/s/$/ myalias/'
 ```

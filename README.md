@@ -723,11 +723,12 @@ CLUSTER MEMBERS=( `cpmiquerybin attr "" network_objects "(type='cluster_member')
 cpmiquerybin attr "" network_objects "type='gateway'|type='cluster_member'|type='gateway_cluster'" -a __name__,ipaddr,svn_version_name,appliance_type
 ```
 
-### Date of yesterday
-
-date -d@$(echo $(($(date +"%s")-86400))) +"%Y-%m-%d"
-
 ## Miscellaneous
+
+### Date of yesterday
+```bash
+date -d@$(echo $(($(date +"%s")-86400))) +"%Y-%m-%d"
+```
 
 ### Emoji
 

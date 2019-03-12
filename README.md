@@ -8,20 +8,14 @@ Often in our daily work we encounter the need to run stuff in CLI - and too ofte
 - [VI](#vi-tricks)
 - [bash](#bash-tricks)
 - [regex](#regex-tricks)
+- [tcpdump](#tcpdump)
 - [BackBox](#backbox-specific)
 - [Check Point](#check-point-tricks)
 - [Misc](#miscellaneous)
+  - [Bash-Essentials](#bash-essentials)
   - [Emoji](#emoji)
 
 ## grep Tricks
-
-### Check Point license expiration
-
-```bash
-[Expert@Checkpoint]# cplic print > cplic.txt
-
-[Expert@Checkpoint]# cat cplic | grep -o -P  '..?Jan.*?....|..?Feb.*?....|..?Mar.*?....|..?Apr.*?....|..?May.*?....|..?Jun.*?....|..?Jul.*?....|..?Aug.*?....|..?Sep.*?....|..?Oct.*?....|..?Nov.*?....|..?Dec.*?....'
-```
 
 ### Print between double quotes
 
@@ -232,7 +226,7 @@ s/          <-- this means it should perform a substitution
     sed -e :a -e '/\\$/N; s/\\\n//; ta'
    ```
    
-   # if a line begins with MATCH, append it to the previous line and replace MATCH with space
+   ### if a line begins with MATCH, append it to the previous line and replace MATCH with space
    ```bash
     sed -e :a -e '$!N;s/\nMATCH/ /;ta' -e 'P;D'
    ```
@@ -602,6 +596,173 @@ rpm -qa --qf "%{NAME}\n"
 ^\w{5,10}$ # allows words of between 5 and 10 characters.
 ```
 
+## tcpdump
+
+### See the list of interfaces on which tcpdump can listen:
+```bash
+tcpdump -D
+```
+
+### Listen on interface eth0:
+```bash
+tcpdump -i eth0
+```
+
+### Listen on any available interface (cannot be done in promiscuous mode. Requires Linux kernel 2.2 or greater):
+```bash
+tcpdump -i any
+```
+
+### Be verbose while capturing packets:
+```bash
+tcpdump -v
+```
+
+### Be more verbose while capturing packets:
+```bash
+tcpdump -vv
+```
+
+### Be very verbose while capturing packets:
+```bash
+tcpdump -vvv
+```
+
+### Be verbose and print the data of each packet in both hex and ASCII, excluding the link level header:
+```bash
+tcpdump -v -X
+```
+
+### Be verbose and print the data of each packet in both hex and ASCII, also including the link level header:
+```bash
+tcpdump -v -XX
+```
+
+### Be less verbose (than the default) while capturing packets:
+```bash
+tcpdump -q
+```
+
+### Limit the capture to 100 packets:
+```bash
+tcpdump -c 100
+```
+
+### Record the packet capture to a file called capture.cap:
+```bash
+tcpdump -w capture.cap
+```
+
+### Record the packet capture to a file called capture.cap but display on-screen how many packets have been captured in real-time:
+```bash
+tcpdump -v -w capture.cap
+```
+
+### Display the packets of a file called capture.cap:
+```bash
+tcpdump -r capture.cap
+```
+
+### Display the packets using maximum detail of a file called capture.cap:
+```bash
+tcpdump -vvv -r capture.cap
+```
+
+### Display IP addresses and port numbers instead of domain and service names when capturing packets (note: on some systems you need to specify -nn to display port numbers):
+```bash
+tcpdump -n
+```
+
+### Capture any packets where the destination host is 192.168.1.1. Display IP addresses and port numbers:
+```bash
+tcpdump -n dst host 192.168.1.1
+```
+
+### Capture any packets where the source host is 192.168.1.1. Display IP addresses and port numbers:
+```bash
+tcpdump -n src host 192.168.1.1
+```
+
+### Capture any packets where the source or destination host is 192.168.1.1. Display IP addresses and port numbers:
+```bash
+tcpdump -n host 192.168.1.1
+```
+
+### Capture any packets where the destination network is 192.168.1.0/24. Display IP addresses and port numbers:
+```bash
+tcpdump -n dst net 192.168.1.0/24
+```
+
+### Capture any packets where the source network is 192.168.1.0/24. Display IP addresses and port numbers:
+```bash
+tcpdump -n src net 192.168.1.0/24
+```
+
+### Capture any packets where the source or destination network is 192.168.1.0/24. Display IP addresses and port numbers:
+```bash
+tcpdump -n net 192.168.1.0/24
+```
+
+### Capture any packets where the destination port is 23. Display IP addresses and port numbers:
+```bash
+tcpdump -n dst port 23
+```
+
+### Capture any packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+```bash
+tcpdump -n dst portrange 1-1023
+```
+
+### Capture only TCP packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+```bash
+tcpdump -n tcp dst portrange 1-1023
+```
+
+### Capture only UDP packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+```bash
+tcpdump -n udp dst portrange 1-1023
+```
+
+### Capture any packets with destination IP 192.168.1.1 and destination port 23. Display IP addresses and port numbers:
+```bash
+tcpdump -n "dst host 192.168.1.1 and dst port 23"
+```
+
+### Capture any packets with destination IP 192.168.1.1 and destination port 80 or 443. Display IP addresses and port numbers:
+```bash
+tcpdump -n "dst host 192.168.1.1 and (dst port 80 or dst port 443)"
+```
+
+### Capture any ICMP packets:
+```bash
+tcpdump -v icmp
+```
+
+### Capture any ARP packets:
+```bash
+tcpdump -v arp
+```
+
+### Capture either ICMP or ARP packets:
+```bash
+tcpdump -v "icmp or arp"
+```
+
+### Capture any packets that are broadcast or multicast:
+```bash
+tcpdump -n "broadcast or multicast"
+```
+
+### Capture 500 bytes of data for each packet rather than the default of 68 bytes:
+```bash
+tcpdump -s 500
+```
+
+### Capture all bytes of data within the packet:
+```bash
+tcpdump -s 0
+```
+
 ## BackBox Specific
 
 ### Send a mail from BackBox CLI
@@ -611,6 +772,19 @@ rpm -qa --qf "%{NAME}\n"
 ```
 
 ## Check Point Tricks
+
+### Check Point license expiration
+
+```bash
+[Expert@Checkpoint]# cplic print > cplic.txt
+
+[Expert@Checkpoint]# cat cplic | grep -o -P  '..?Jan.*?....|..?Feb.*?....|..?Mar.*?....|..?Apr.*?....|..?May.*?....|..?Jun.*?....|..?Jul.*?....|..?Aug.*?....|..?Sep.*?....|..?Oct.*?....|..?Nov.*?....|..?Dec.*?....'
+```
+### print objects from dbedit
+```bash
+echo -e "print <table_name> <object_name>\n-q\n" | dbedit -local
+echo -e "printxml <table_name> <object_name>\n-q\n" | dbedit -local
+```
 
 ### Anti-spoofing check on all firewall interfaces
 
@@ -725,9 +899,76 @@ cpmiquerybin attr "" network_objects "type='gateway'|type='cluster_member'|type=
 
 ## Miscellaneous
 
+### Bash-Essentials
+
+#### Variables
+```bash
+NAME="Variable"
+echo $NAME
+echo "$NAME"
+echo "${NAME}!"
+```
+
+#### Arguments
+````bash
+$#	Number of arguments
+$*	All arguments
+$@	All arguments, starting from first
+$1	First argument
+````
+
+#### Conditions
+```bash
+[[ -z STRING ]]	Empty string
+[[ -n STRING ]]	Not empty string
+[[ STRING == STRING ]]	Equal
+[[ STRING != STRING ]]	Not Equal
+[[ NUM -eq NUM ]]	Equal
+[[ NUM -ne NUM ]]	Not equal
+[[ NUM -lt NUM ]]	Less than
+[[ NUM -le NUM ]]	Less than or equal
+[[ NUM -gt NUM ]]	Greater than
+[[ NUM -ge NUM ]]	Greater than or equal
+[[ STRING =~ STRING ]]	Regexp
+(( NUM < NUM ))	Numeric conditions
+[[ -o noclobber ]]	If OPTIONNAME is enabled
+[[ ! EXPR ]]	Not
+[[ X ]] && [[ Y ]]	And
+[[ X ]] || [[ Y ]]	Or
+```
+
+#### File Conditions
+````bash
+[[ -e FILE ]]	Exists
+[[ -r FILE ]]	Readable
+[[ -h FILE ]]	Symlink
+[[ -d FILE ]]	Directory
+[[ -w FILE ]]	Writable
+[[ -s FILE ]]	Size is > 0 bytes
+[[ -f FILE ]]	File
+[[ -x FILE ]]	Executable
+[[ FILE1 -nt FILE2 ]]	1 is more recent than 2
+[[ FILE1 -ot FILE2 ]]	2 is more recent than 1
+[[ FILE1 -ef FILE2 ]]	Same files
+````
+
+#### Expansions
+```bash
+!$	Expand last parameter of most recent command
+!*	Expand all parameters of most recent command
+!-n	Expand nth most recent command
+!n	Expand nth command in history
+!<command>	Expand most recent invocation of command <command>
+```
+
 ### Date of yesterday
 ```bash
 date -d@$(echo $(($(date +"%s")-86400))) +"%Y-%m-%d"
+```
+
+### url encode STRING
+```bash
+echo -n "STRING" | perl -MURI::Escape -wlne 'print uri_escape $_'
 ```
 
 ### Emoji
